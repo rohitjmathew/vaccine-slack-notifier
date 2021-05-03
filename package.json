@@ -1,0 +1,24 @@
+{
+  "name": "vaccine-slack-notifier",
+  "version": "1.0.0",
+  "description": "Slack Notifier for India Vaccine Appointment",
+  "main": "vaccineNotifier.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rohitjmathew/vaccine-slack-notifier.git"
+  },
+  "author": "Rohit Mathew",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rohitjmathew/vaccine-slack-notifier/issues"
+  },
+  "homepage": "https://github.com/rohitjmathew/vaccine-slack-notifier#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "moment": "^2.29.1",
+    "node-fetch": "^2.6.1"
+  }
+}
