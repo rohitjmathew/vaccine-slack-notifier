@@ -10,7 +10,7 @@ const PINCODES = process.env.PINCODES.split(' ')
 async function main() {
     try {
         cron.schedule('* * * * *', async () => {
-            await generalNotify("Hold tits! checking vaccine availability!")
+            await generalNotify("Hold your breath! :crossed_fingers: checking vaccine availability!")
             await checkAvailability();
         });
     } catch (e) {
@@ -49,7 +49,7 @@ function getSlotsForDate(DATE, pincode) {
             if (availableCenters.length > 1) {
                 await notifyMe(availableCenters)
             } else {
-                await generalNotify(`None found yet for ${pincode} for date ${DATE}, can leave tits now.`)
+                await generalNotify(`None found yet for ${pincode} for date ${DATE}, can breath again.`)
             }
         })
         .catch(function (error) {
