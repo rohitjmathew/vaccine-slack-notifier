@@ -2,6 +2,8 @@ require('dotenv').config()
 const moment = require('moment');
 const cron = require('node-cron');
 const fetch = require('node-fetch');
+var express = require('express')
+var app = express()
 
 const SLACK_WEBHOOK = process.env.SLACK_WEBHOOK
 const PINCODES = process.env.PINCODES.split(' ')
@@ -10,7 +12,7 @@ const PINCODES = process.env.PINCODES.split(' ')
 async function main() {
     try {
         cron.schedule('* * * * *', async () => {
-            await generalNotify("Hold your breath! :crossed_fingers: checking vaccine availability!")
+            await generalNotify("kbdckjc Hold your breath! :crossed_fingers: checking vaccine availability!")
             await checkAvailability();
         });
     } catch (e) {
@@ -49,7 +51,7 @@ function getSlotsForDate(DATE, pincode) {
             if (availableCenters.length > 1) {
                 await notifyMe(availableCenters)
             } else {
-                await generalNotify(`None found yet for ${pincode} for date ${DATE}, can breath again.`)
+                await generalNotify(`ejchecb None found yet for ${pincode} for date ${DATE}, can breath again.`)
             }
         })
         .catch(function (error) {
@@ -108,3 +110,11 @@ async function fetchNext2weeks() {
 
 main()
     .then(() => { console.log('Vaccine availability checker started.'); });
+
+app.get('/', function (req, res) {
+    res.send('Hello World!')
+})
+
+app.listen(8081, function () {
+    console.log('app listening on port 8081!')
+})

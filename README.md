@@ -4,9 +4,16 @@ Slack Notifier for India Vaccine Appointment. This checks the Co-WIN portal peri
 
 It triggers a slack notification to your channel added as a part of environment variable for all the pin codes added to the environment variable 
 
-## Installation 
+## Prerequisites
 
-You need to setup slack incoming webhooks to be able to receive alerts. Follow the following [tutorial](https://api.slack.com/messaging/webhooks) and use the webhook link in your environment variables
+- You need to setup slack incoming webhooks to be able to receive alerts. Follow the following [tutorial](https://api.slack.com/messaging/webhooks) and use the webhook link in your environment variables
+- You need a DigitalOcean account to deploy this on a cloud provider. If not click on the deploy button below and first create your account. 
+
+## Deployment
+
+To deploy this project click the button below to deploy the code on DigitalOcean
+
+[![Deploy to DO](https://www.deploytodo.com/do-btn-blue.svg)](https://cloud.digitalocean.com/apps/new?repo=https://github.com/rohitjmathew/vaccine-slack-notifier/tree/main&refcode=4c19f19961b8)
 
 ## Environment Variables
 
@@ -32,23 +39,44 @@ Go to the project directory
   cd vaccine-slack-notifier
 ```
 
-Install `pm2`
+### Using PM2
 
+- Install PM2
 ```bash
   npm install pm2 -g
 ```
 
-Start the server
+- Start the server
 
 ```bash
-  make run
+  make pm2-run
 ```
 
-Stop the server
+- Stop the server
 
 ```bash
-  make stop
+  make pm2-stop
 ```
+
+### Using Docker
+
+- Ensure Docker is installed
+
+- Start the server
+
+```bash
+  make docker-run
+```
+
+- Stop the server
+
+```bash
+  make docker-stop
+```
+
+## Screenshots
+
+![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
 ## Contributing
 
