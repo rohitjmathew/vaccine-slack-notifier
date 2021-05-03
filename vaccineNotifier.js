@@ -1,5 +1,6 @@
 require('dotenv').config()
 const moment = require('moment');
+const cron = require('node-cron');
 const fetch = require('node-fetch');
 
 const SLACK_WEBHOOK = process.env.SLACK_WEBHOOK
@@ -8,8 +9,10 @@ const PINCODES = process.env.PINCODES.split(' ')
 
 async function main() {
     try {
-        await generalNotify("Hold tits! checking vaccine availability!")
-        await checkAvailability();
+        cron.schedule('* * * * *', async () => {
+            await generalNotify("Hold tits! checking vaccine availability!")
+            await checkAvailability();
+        });
     } catch (e) {
         console.log('an error occured: ' + JSON.stringify(e, null, 2));
         throw e;
