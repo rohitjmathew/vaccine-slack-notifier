@@ -76,7 +76,7 @@ Go to the project directory
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+<img width="483" alt="Sample Screenshot" src="https://user-images.githubusercontent.com/17832347/116944784-c62dea80-ac93-11eb-9b47-8933ecfd641a.png">
 
 ## Contributing
 
