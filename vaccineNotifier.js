@@ -36,7 +36,7 @@ function getSlotsForDate(DATE, pincode) {
         .then(async function (data) {
             let centers = data.centers
             const availableCenters = []
-            centers.forEach(function (center) {
+            centers.forEach(async function (center) {
                 let sessions = center.sessions;
                 let validSlots = sessions.filter(slot => slot.min_age_limit <= 18 && slot.available_capacity > 0)
                 console.log({ date: DATE, validSlots: validSlots.length })
@@ -46,13 +46,11 @@ function getSlotsForDate(DATE, pincode) {
                     delete center['sessions']
                     let validCenter = buildVaccineOutput(center);
                     availableCenters.push(validCenter)
+                    await notifyMe(availableCenters)
+                } else {
+                    await generalNotify(`None found yet for ${pincode} for date ${DATE}, can breath again.`)
                 }
             });
-            if (availableCenters.length > 1) {
-                await notifyMe(availableCenters)
-            } else {
-                await generalNotify(`None found yet for ${pincode} for date ${DATE}, can breath again.`)
-            }
         })
         .catch(function (error) {
             console.log(error);
