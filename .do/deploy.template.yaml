@@ -14,6 +14,9 @@ spec:
     - key: PINCODES
       scope: RUN_AND_BUILD_TIME
       value: 560017 560032 560020 560103
+    - key: SCHEDULE
+      scope: RUN_AND_BUILD_TIME
+      value: '* * * * *'
     http_port: 8081
     instance_count: 1
     instance_size_slug: basic-xxs
