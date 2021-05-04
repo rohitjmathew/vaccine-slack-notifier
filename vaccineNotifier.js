@@ -1,18 +1,19 @@
-require('dotenv').config()
+require('dotenv').config();
 const moment = require('moment');
 const cron = require('node-cron');
 const fetch = require('node-fetch');
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
 
-const SLACK_WEBHOOK = process.env.SLACK_WEBHOOK
-const PINCODES = process.env.PINCODES.split(' ')
+const SLACK_WEBHOOK = process.env.SLACK_WEBHOOK;
+const PINCODES = process.env.PINCODES.split(' ');
+const SCHEDULE = process.env.SCHEDULE;
 
 
 async function main() {
     try {
-        cron.schedule('* * * * *', async () => {
-            await generalNotify("Hold your breath! :crossed_fingers: checking vaccine availability!")
+        cron.schedule(SCHEDULE, async () => {
+            await generalNotify("Hold your breath! :crossed_fingers: checking vaccine availability!");
             await checkAvailability();
         });
     } catch (e) {
@@ -34,27 +35,27 @@ function getSlotsForDate(DATE, pincode) {
     fetch("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pincode + "&date=" + DATE)
         .then(res => res.json())
         .then(async function (data) {
-            let centers = data.centers
-            const availableCenters = []
+            let centers = data.centers;
+            const availableCenters = [];
             centers.forEach(async function (center) {
                 let sessions = center.sessions;
-                let validSlots = sessions.filter(slot => slot.min_age_limit <= 18 && slot.available_capacity > 0)
-                console.log({ date: DATE, validSlots: validSlots.length })
+                let validSlots = sessions.filter(slot => slot.min_age_limit <= 18 && slot.available_capacity > 0);
+                console.log({ date: DATE, validSlots: validSlots.length });
                 if (validSlots.length > 0) {
-                    center['validSlots'] = validSlots
-                    center['testDate'] = DATE
-                    delete center['sessions']
+                    center['validSlots'] = validSlots;
+                    center['testDate'] = DATE;
+                    delete center['sessions'];
                     let validCenter = buildVaccineOutput(center);
-                    availableCenters.push(validCenter)
-                    await notifyMe(availableCenters)
+                    availableCenters.push(validCenter);
+                    await notifyMe(availableCenters);
                 } else {
-                    await generalNotify(`None found yet for ${pincode} for date ${DATE}, can breath again.`)
+                    await generalNotify(`None found yet for ${pincode} for date ${DATE}, can breath again.`);
                 }
             });
         })
         .catch(function (error) {
             console.log(error);
-            generalNotify("Error Occured:\n" + error)
+            generalNotify("Error Occured:\n" + error);
         });
 }
 
@@ -98,7 +99,7 @@ async function fetchNext2weeks() {
     let dates = [];
     let today = moment();
     for (let i = 0; i < 2; i++) {
-        let dateString = today.format('DD-MM-YYYY')
+        let dateString = today.format('DD-MM-YYYY');
         dates.push(dateString);
         today.add(7, 'day');
     }
@@ -110,9 +111,9 @@ main()
     .then(() => { console.log('Vaccine availability checker started.'); });
 
 app.get('/', function (req, res) {
-    res.send('Hello World!')
+    res.send('Hello World!');
 })
 
 app.listen(8081, function () {
-    console.log('app listening on port 8081!')
+    console.log('app listening on port 8081!');
 })
