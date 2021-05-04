@@ -23,6 +23,8 @@ To run this project, you will need to add the following environment variables to
 
 `SLACK_WEBHOOK`
 
+`SCHEDULE`
+
 An example version can be seen [here](https://github.com/rohitjmathew/vaccine-slack-notifier/blob/main/.env.sample)
 
 ## Run Locally
