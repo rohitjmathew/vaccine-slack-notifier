@@ -2,9 +2,10 @@ spec:
   name: vaccine-slack-notifier
   services:
   - name: vaccine-slack-notifier
-    git:
+    github:
       branch: main
-      repo_clone_url: https://github.com/rohitjmathew/vaccine-slack-notifier.git
+      deploy_on_push: true
+      repo: rohitjmathew/vaccine-slack-notifier
     dockerfile_path: Dockerfile
     envs:
     - key: SLACK_WEBHOOK
