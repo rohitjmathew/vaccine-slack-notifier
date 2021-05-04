@@ -4,6 +4,8 @@ Slack Notifier for India Vaccine Appointment. This checks the Co-WIN portal peri
 
 It triggers a slack notification to your channel added as a part of environment variable for all the pin codes added to the environment variable 
 
+*Note: This utility uses COWIN Public APIs data. There is a delay noticed with respect to updating data with respect to slot availability. Do use the utility with that in mind* 
+
 ## Prerequisites
 
 - You need to setup slack incoming webhooks to be able to receive alerts. Follow the following [tutorial](https://api.slack.com/messaging/webhooks) and use the webhook link in your environment variables
