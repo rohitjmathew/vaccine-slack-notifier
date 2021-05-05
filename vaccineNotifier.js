@@ -8,7 +8,7 @@ var app = express();
 const SLACK_WEBHOOK = process.env.SLACK_WEBHOOK;
 const PINCODES = process.env.PINCODES.split(' ');
 const SCHEDULE = process.env.SCHEDULE;
-const API_KEY = process.env.AUTH_TOKEN;
+let API_KEY = process.env.AUTH_TOKEN;
 
 const PUBLIC_API = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=";
 const AUTH_API = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin?pincode="
