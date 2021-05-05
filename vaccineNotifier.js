@@ -55,7 +55,9 @@ async function getSlotsForDate(DATE, pincode) {
                 await notifyMe("Resetting API KEY as Forbidden Status Code (403) received");
                 API_KEY = null;
             } else {
-                throw new Error(res.statusText);
+                let body = await res.text();
+                console.log(body)
+                throw new Error(body + ` for pincode ${pincode}`);
             }
         } else {
             let data = await res.json();
@@ -78,7 +80,7 @@ async function getSlotsForDate(DATE, pincode) {
             }
         }
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         generalNotify("Error Occured:\n" + error);
     }
 }
