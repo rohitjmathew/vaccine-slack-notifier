@@ -38,6 +38,7 @@ async function checkAvailability() {
 async function getSlotsForDate(DATE, pincode) {
     try {
         let URL = getBaseDomain();
+        console.log(URL);
         let res = await fetch(URL + pincode + "&date=" + DATE, {
             headers: {
                 pragma: "no-cache",
@@ -45,11 +46,17 @@ async function getSlotsForDate(DATE, pincode) {
                 accept: "application/json, text/plain, */*",
                 authorization:
                     "Bearer " + API_KEY,
+                "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36"
             },
             maxRedirects: 20,
         })
         if (res.status != 200) {
-            throw new Error(res.statusText);
+            if (res.status == 403) {
+                await notifyMe("Resetting API KEY as Forbidden Status Code (403) received");
+                API_KEY = null;
+            } else {
+                throw new Error(res.statusText);
+            }
         } else {
             let data = await res.json();
             let centers = data.centers;
