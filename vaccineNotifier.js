@@ -32,7 +32,7 @@ async function checkAvailability() {
 }
 
 function getSlotsForDate(DATE, pincode) {
-    fetch("https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin?pincode=" + pincode + "&date=" + DATE)
+    fetch("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pincode + "&date=" + DATE)
         .then(res => res.json())
         .then(async function (data) {
             let centers = data.centers;
