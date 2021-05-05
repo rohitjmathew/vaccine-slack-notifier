@@ -21,11 +21,13 @@ To deploy this project click the button below to deploy the code on DigitalOcean
 
 To run this project, you will need to add the following environment variables to your .env file
 
-`PINCODES`
+`PINCODES` - List of pin codes you want separated by a space
 
-`SLACK_WEBHOOK`
+`SLACK_WEBHOOK` - The Webhook link for slack to trigger messages
 
-`SCHEDULE`
+`SCHEDULE` - The Cron Entry to control frequency of hits
+
+`AUTH_TOKEN` - Your CoWin Auth Token. This needs to be updated everyday as the token is valid for a single day.
 
 An example version can be seen [here](https://github.com/rohitjmathew/vaccine-slack-notifier/blob/main/.env.sample)
 

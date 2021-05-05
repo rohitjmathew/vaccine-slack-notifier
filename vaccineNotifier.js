@@ -8,6 +8,10 @@ var app = express();
 const SLACK_WEBHOOK = process.env.SLACK_WEBHOOK;
 const PINCODES = process.env.PINCODES.split(' ');
 const SCHEDULE = process.env.SCHEDULE;
+const API_KEY = process.env.AUTH_TOKEN;
+
+const PUBLIC_API = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=";
+const AUTH_API = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByPin?pincode="
 
 
 async function main() {
@@ -23,23 +27,36 @@ async function main() {
 }
 
 async function checkAvailability() {
-    let datesArray = await fetchNext2weeks();
-    datesArray.forEach(date => {
-        PINCODES.forEach(pincode => {
-            getSlotsForDate(date, pincode);
-        })
+    // let datesArray = await fetchNext2weeks();
+    // datesArray.forEach(date => {
+    PINCODES.forEach(pincode => {
+        getSlotsForDate(moment().format('DD-MM-YYYY'), pincode);
     })
+    // })
 }
 
-function getSlotsForDate(DATE, pincode) {
-    fetch("https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=" + pincode + "&date=" + DATE)
-        .then(res => res.json())
-        .then(async function (data) {
+async function getSlotsForDate(DATE, pincode) {
+    try {
+        let URL = getBaseDomain();
+        let res = await fetch(URL + pincode + "&date=" + DATE, {
+            headers: {
+                pragma: "no-cache",
+                "cache-control": "no-cache",
+                accept: "application/json, text/plain, */*",
+                authorization:
+                    "Bearer " + API_KEY,
+            },
+            maxRedirects: 20,
+        })
+        if (res.status != 200) {
+            throw new Error(res.statusText);
+        } else {
+            let data = await res.json();
             let centers = data.centers;
             const availableCenters = [];
-            centers.forEach(async function (center) {
+            for (let center of centers) {
                 let sessions = center.sessions;
-                let validSlots = sessions.filter(slot => slot.min_age_limit <= 18 && slot.available_capacity > 0);
+                let validSlots = sessions != undefined ? sessions.filter(slot => slot.min_age_limit <= 18 && slot.available_capacity > 0) : [];
                 console.log({ date: DATE, validSlots: validSlots.length });
                 if (validSlots.length > 0) {
                     center['validSlots'] = validSlots;
@@ -49,14 +66,14 @@ function getSlotsForDate(DATE, pincode) {
                     availableCenters.push(validCenter);
                     await notifyMe(availableCenters);
                 } else {
-                    await generalNotify(`None found yet for ${pincode} for date ${DATE}, can breath again.`);
+                    await generalNotify(`None found yet for ${pincode} : ${center.name}, can breath again.`);
                 }
-            });
-        })
-        .catch(function (error) {
-            console.log(error);
-            generalNotify("Error Occured:\n" + error);
-        });
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        generalNotify("Error Occured:\n" + error);
+    }
 }
 
 function buildVaccineOutput(centre) {
@@ -67,6 +84,14 @@ function buildVaccineOutput(centre) {
         date: centre.validSlots[0].date,
         availableCapacity: centre.validSlots[0].available_capacity,
         slots: centre.validSlots[0].slots
+    }
+}
+
+function getBaseDomain() {
+    if (API_KEY != undefined) {
+        return AUTH_API;
+    } else {
+        return PUBLIC_API;
     }
 }
 
